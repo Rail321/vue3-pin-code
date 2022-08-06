@@ -2,9 +2,12 @@
   <div>
     <AppPinCode
       v-model="pinCode"
+      v-bind:disabled="pinCodeDisabled"
+      v-bind:error="pinCodeError"
+      v-bind:success="pinCodeSuccess"
+      v-on:update:modelValue="onUpdatePinCode"
+      v-on:focus="onFocusPinCode"
     />
-
-    <p>{{ pinCode }}</p>
   </div>
 </template>
 
@@ -13,4 +16,26 @@
   import AppPinCode from '@/components/AppPinCode'
 
   const pinCode = ref( '' )
+  const pinCodeDisabled = ref( false )
+  const pinCodeError = ref( false )
+  const pinCodeSuccess = ref( false )
+
+  const onUpdatePinCode = value => {
+    if ( value.length === 4 ) {
+      pinCodeDisabled.value = true
+      setTimeout( () => {
+        pinCodeDisabled.value = false
+        if ( Math.random() > 0.5 ) {
+          pinCodeError.value = true
+        } else {
+          pinCodeSuccess.value = true
+        }
+      }, 1000 )
+    }
+  }
+
+  const onFocusPinCode = () => {
+    pinCodeError.value = false
+    pinCodeSuccess.value = false
+  }
 </script>
