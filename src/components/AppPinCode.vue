@@ -16,6 +16,7 @@
         v-on:focus="onFocus"
         v-on:copy.prevent
         v-on:cut.prevent
+        v-on:keydown="onKeyDown"
       />
 
       <ul class="pin-code-list pin-code__list">
@@ -25,7 +26,7 @@
         >
           <input class="pin-code-cell pin-code__cell" type="text" disabled
             v-bind:class="{ 'pin-code-cell_filled': !!( getValueByIndex( index - 1 ) ) }"
-            v-bind:value="!!( getValueByIndex( index - 1 ) ) ? '&lowast;' : null"
+            v-bind:value="getByIndex( index - 1 )"
           />
         </li>
       </ul>
@@ -42,6 +43,9 @@
     modelValue: {
       type: String
     },
+    secured: {
+      type: Boolean
+    },
     disabled: {
       type: Boolean
     },
@@ -53,7 +57,7 @@
     }
   } )
 
-  const { modelValue } = toRefs( props )
+  const { modelValue, secured } = toRefs( props )
 
   const emit = defineEmits( [ 'update:modelValue', 'focus' ] )
 
@@ -88,6 +92,18 @@
   const onClick = () => input.value.focus()
 
   const onFocus = () => emit( 'focus' )
+
+  const onKeyDown = event => {
+    const code = event.code
+    if ( code.includes( 'Arrow' ) ) event.preventDefault()
+  }
+
+  const getByIndex = index => {
+    const value = getValueByIndex( index )
+    const exist = !!( value )
+    const result = exist ? ( secured.value ? '∗' : value ) : null
+    return result
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -150,6 +166,7 @@
     }
 
     &-input:focus ~ &-list &-cell {
+      background-color: #EDEEEF;
       border: 2px solid #1EAEED;
     }
     &-input:focus ~ &-list &-cell_filled {

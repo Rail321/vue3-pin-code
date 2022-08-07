@@ -1,13 +1,24 @@
 <template>
   <div>
-    <AppPinCode
-      v-model="pinCode"
-      v-bind:disabled="pinCodeDisabled"
-      v-bind:error="pinCodeError"
-      v-bind:success="pinCodeSuccess"
-      v-on:update:modelValue="onUpdatePinCode"
-      v-on:focus="onFocusPinCode"
-    />
+    <div>
+      <app-pin-code
+        secured
+        v-model="pinCode"
+        v-bind:disabled="pinCodeDisabled"
+        v-bind:error="pinCodeError"
+        v-bind:success="pinCodeSuccess"
+        v-on:update:modelValue="onUpdatePinCode"
+      />
+    </div>
+
+    <br />
+
+    <div>
+      <app-pin-code
+        v-model="pinCode"
+        v-bind:disabled="pinCodeDisabled"
+      />
+    </div>
   </div>
 </template>
 
@@ -21,6 +32,9 @@
   const pinCodeSuccess = ref( false )
 
   const onUpdatePinCode = value => {
+    pinCodeError.value = false
+    pinCodeSuccess.value = false
+
     if ( value.length === 4 ) {
       pinCodeDisabled.value = true
       setTimeout( () => {
@@ -32,10 +46,5 @@
         }
       }, 1000 )
     }
-  }
-
-  const onFocusPinCode = () => {
-    pinCodeError.value = false
-    pinCodeSuccess.value = false
   }
 </script>
