@@ -15,8 +15,8 @@
 
     <div>
       <app-pin-code
+        disabled
         v-model="pinCode"
-        v-bind:disabled="pinCodeDisabled"
       />
     </div>
   </div>

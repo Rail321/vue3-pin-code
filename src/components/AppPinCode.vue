@@ -26,7 +26,7 @@
         >
           <input class="pin-code-cell pin-code__cell" type="text" disabled
             v-bind:class="{ 'pin-code-cell_filled': !!( getValueByIndex( index - 1 ) ) }"
-            v-bind:value="getByIndex( index - 1 )"
+            v-bind:value="getViewByIndex( index - 1 )"
           />
         </li>
       </ul>
@@ -98,7 +98,7 @@
     if ( code.includes( 'Arrow' ) ) event.preventDefault()
   }
 
-  const getByIndex = index => {
+  const getViewByIndex = index => {
     const value = getValueByIndex( index )
     const exist = !!( value )
     const result = exist ? ( secured.value ? '∗' : value ) : null
